@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
+//const cors = require('cors');
+
+import cors from 'cors';
+
 require('dotenv').config();
 
 const usersRouter = require('./routes/users');
