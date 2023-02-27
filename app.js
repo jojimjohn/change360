@@ -1,6 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const corsOptions ={
+  origin:'*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
+
+
 
 require('dotenv').config();
 
@@ -12,8 +21,8 @@ const app = express();
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-
+//app.use(cors());
+app.use(cors(corsOptions))
 
 // Middleware for parsing JSON
 app.use(express.json());
