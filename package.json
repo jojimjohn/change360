@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start": "node app.js",
-    "heroku-postbuild": "npm run build",
-    "web": "node server.js --timeout 600000"
+    "heroku-postbuild": "node app.js",
+    "web": "node app.js --timeout 600000"
   },
   "author": "",
   "license": "ISC",
