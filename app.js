@@ -9,8 +9,6 @@ const corsOptions ={
   optionSuccessStatus:200,
 }
 
-
-
 require('dotenv').config();
 
 const usersRouter = require('./routes/users');
