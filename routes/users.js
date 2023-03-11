@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const axios = require('axios');
+const verifyToken = require('../middleware/verifyToken');
 
 require('dotenv').config();
 
@@ -11,6 +12,32 @@ const configuration = new Configuration({
 });
 
 const openai = new OpenAIApi(configuration);
+
+// API endpoint for retrieving user information
+router.get('/auth/:address', async (req, res) => {
+  try {
+    const address = req.params.address;
+    const user = await User.findOne({ address: address });
+
+    // If a user with the matching address is found, return the user object
+    if (user) {
+      res.json({
+        message: address,
+        userInfo: user,
+      });
+    } else {
+      // If no user with the matching address is found, return an error message
+      res.status(404).json({ error: 'User not found' });
+    }
+
+
+   
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
 
 // GET: Get all users
 router.get('/', async (req, res) => {
@@ -27,6 +54,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const {
+      address,
       nickname,
       age,
       gender,
@@ -41,6 +69,7 @@ router.post('/', async (req, res) => {
     } = req.body;
 
     const newUser = new User({
+      address,
       nickname,
       age,
       gender,

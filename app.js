@@ -15,6 +15,9 @@ const usersRouter = require('./routes/users');
 const nutritionRouter = require('./routes/nutrition');
 const additionalPlanRoute = require('./routes/additionalPlan');
 
+const authRoutes = require('./routes/auth');
+const aiRoute = require('./routes/aiResponse'); 
+
 const app = express();
 
 // Middleware
@@ -29,6 +32,13 @@ app.use(express.json());
 app.use('/api/users', usersRouter);
 app.use('/api/nutrition', nutritionRouter);
 app.use('/api/additionalplan', additionalPlanRoute);
+
+// auth routes
+app.use('/api/login', authRoutes);
+
+// AI route
+app.use('/api/ai', aiRoute); // Add this line to use the new route
+
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI, {
