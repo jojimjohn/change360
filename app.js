@@ -18,6 +18,8 @@ const additionalPlanRoute = require('./routes/additionalPlan');
 const authRoutes = require('./routes/auth');
 const aiRoute = require('./routes/aiResponse'); 
 
+const rewardsRouter = require('./routes/rewards');
+
 const app = express();
 
 // Middleware
@@ -28,17 +30,19 @@ app.use(cors(corsOptions))
 // Middleware for parsing JSON
 app.use(express.json());
 
-// Routes
+// Mealplan routes
 app.use('/api/users', usersRouter);
 app.use('/api/nutrition', nutritionRouter);
 app.use('/api/additionalplan', additionalPlanRoute);
 
-// auth routes
+// auth route
 app.use('/api/login', authRoutes);
 
-// AI route
-app.use('/api/ai', aiRoute); // Add this line to use the new route
+// Return users -AI route
+app.use('/api/ai', aiRoute); 
 
+// Reward points route
+app.use('/api/reward_points', rewardsRouter);
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI, {
