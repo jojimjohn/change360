@@ -20,6 +20,8 @@ const aiRoute = require('./routes/aiResponse');
 
 const rewardsRouter = require('./routes/rewards');
 
+const feedbackRouter = require("./routes/feedback");
+
 const app = express();
 
 // Middleware
@@ -43,6 +45,9 @@ app.use('/api/ai', aiRoute);
 
 // Reward points route
 app.use('/api/reward_points', rewardsRouter);
+
+// Feedback route
+app.use("/api/feedback", feedbackRouter);
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI, {
