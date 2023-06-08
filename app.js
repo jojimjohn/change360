@@ -22,6 +22,8 @@ const rewardsRouter = require('./routes/rewards');
 
 const feedbackRouter = require("./routes/feedback");
 
+const paymentRouter = require("./routes/payments");
+
 const app = express();
 
 // Middleware
@@ -48,6 +50,9 @@ app.use('/api/reward_points', rewardsRouter);
 
 // Feedback route
 app.use("/api/feedback", feedbackRouter);
+
+//Payments route
+app.use('/api/payments', paymentRouter);
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI, {

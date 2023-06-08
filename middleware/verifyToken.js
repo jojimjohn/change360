@@ -11,8 +11,8 @@ const verifyToken = (req, res, next) => {
 
   try {
     // Verify token and add user ID to request object
-    const decoded = jwt.verify(token, 'secret_key');
-    req.userId = decoded.address;
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    req.user = decoded.address;
     next();
   } catch (error) {
     console.error(error);

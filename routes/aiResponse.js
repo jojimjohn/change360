@@ -18,11 +18,16 @@ router.post('/', async (req, res) => {
 
   try {
    const user = await User.findOne({ address: address });
-   const { nickname, gender, age, height, heightUnit, weight, weightUnit, fitnessLevel, fitnessGoal, curExercise, dailyActivity } = user;
+   if (!user) {
+    // Handle the case when the user is not found, for example:
+    console.error('User not found');
+
+  } else {
+    const { nickname, gender, age, height, heightUnit, weight, weightUnit, fitnessLevel, fitnessGoal, curExercise, dailyActivity } = user;
     
     const prompt = `Imagine you are a world class health and fitness coach  known as “C.H.A.N.G.E.360” and you are tasked with creating a nutrition program for a client ${nickname} who has been using your services for a few days to get them the best results in the fastest most sustainable way possible. \n\nThe solution must be a new detailed meal plan, sample recipe, recommendations and tips based on client responses. Start by answering to the client responses with a list of useful tips the client can follow.\n\n The plan must adhere to  ${nickname}'s follow-up information. Also include the associated Macros and calories for each meal provided and place all items in a table format for ease of use. Provide one sample recipe from the meal plan to the client. At the end of the meal plan, there is a grocery list that summarizes the total quantity / volume  of each item used for this plan. Do not reply that there are many factors that influence diet and nutrition. Do not echo my prompt but reiterate client responses for emphasis. Speak directly to the client.\n\n Client summary =Gender: ${gender}, Age: ${age}, Height: ${height} ${heightUnit}, Weight: ${weight} ${weightUnit}, Fitness Level: ${fitnessLevel}, Fitness Goal: ${fitnessGoal}, Current Exercise: ${curExercise}, Daily Activity: ${dailyActivity}., ${answers}. \n\nPrepare the one day full plan now and provide recommendations based on client feedback.`;   
     
-    console.log(prompt);
+    console.log(address);
     // const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
     //     prompt: `${prompt}`,
     //     temperature: 0.5,
@@ -38,7 +43,7 @@ router.post('/', async (req, res) => {
     // });
 
     const response = await openai.createCompletion({
-      model: `text-davinci-003`, 
+      model: `gpt-3.5-turbo`, 
       prompt: `${prompt}`,
       temperature: 0.3,
       max_tokens: 2500,
@@ -50,6 +55,8 @@ router.post('/', async (req, res) => {
     res.json({
         message: response.data.choices[0].text
       });
+  }
+   
 
   } catch (error) {
     console.error(error);
