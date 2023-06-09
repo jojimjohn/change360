@@ -12,6 +12,7 @@ router.post('/', async (req, res) => {
     amount: 500, 
     currency: "usd",
     payment_method_types: ['card'],
+    description: "Meal Plan Fee",
   });
 
   res.json(paymentIntent); 
