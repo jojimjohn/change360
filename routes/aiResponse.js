@@ -64,4 +64,43 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Route for getting initial AI response
+router.post('/init', async (req, res) => {
+  try {
+
+    const {
+        userId,
+      } = req.body;
+  
+      const user = await User.findOne({ address: userId });
+      if (!user) {
+        return res.status(400).json({ message: 'User not found' });
+      } else {
+
+      const { nickname, gender, age, height, heightUnit, weight, weightUnit, fitnessLevel, fitnessGoal, curExercise, dailyActivity } = user;
+
+      const message = `[INSTRUCTIONS]Forget everything from our previous conversation and start fresh with this input:  Imagine you are a world-class nutrition, health and dietician expert known as “C.H.A.N.G.E.360” and you are tasked with creating a nutrition program for a ${gender} to get them the best results in the fastest most sustainable way possible.  I want you to review the ${nickname} data and formulate a brief summary of their goals as well as an introduction of yourself. Calculate the clients BMR and RMR and provide a short description of what these mean, also indicate how many calories per day the ${nickname} will burn based on the provided data and lastly estimate the total calories per day and per meal that the client will need to reach their intended goals. Do not reply that there are many factors that influence diet and nutrition. Do not echo my prompt. Provide the summary as if you were the personal dietician and speak directly to the ${nickname}. below the summary ask the client for additional details regarding their dietary preferences and number of meals per day so that you can later create a detailed meal plan based on all combined data. Client =Gender: ${gender}, Age: ${age}, Height: ${height} ${heightUnit}, Weight: ${weight} ${weightUnit}, Fitness Level: ${fitnessLevel}, Fitness Goal: ${fitnessGoal}, Current Exercise: ${curExercise}, Daily Activity: ${dailyActivity}.`;
+  
+      const response = await openai.createCompletion({
+        model: `text-davinci-003`, 
+        prompt: `${message}`,
+        temperature: 0.5,
+        max_tokens: 2000,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      });
+  
+      res.json({
+        message: response.data.choices[0].text,
+        userId: user.id,
+      });
+    }
+
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: 'Server Error' });
+    }
+});
+
 module.exports = router;
