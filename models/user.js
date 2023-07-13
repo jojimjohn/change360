@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   address: {
     type: String,
-    required: false,
-    unique: true
+    required: false
+    //unique: true
   },
   nickname: {
     type: String,
@@ -50,6 +50,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   }
+  // credits: {
+  //   type: Number,
+  //   default: 0
+  // },
+  // subscription: {
+  //   type: Boolean,
+  //   default: false
+  // }
   // exerciseFrequency: {
   //   type: Number,
   //   required: true
